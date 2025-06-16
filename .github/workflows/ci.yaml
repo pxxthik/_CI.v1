@@ -3,10 +3,15 @@ name: CI
 on: push
 
 jobs:
-  
+
   Linting:
     name: Check Linting
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-versions: ['3.10', '3.11']
 
     steps:
       - name: Code Checkout
@@ -15,7 +20,7 @@ jobs:
       - name: Set up python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: ${{ matrix.python-versions }}
       
       - name: Install flake8
         run: |
